@@ -12,13 +12,14 @@ class TrafficLogger:
         """
         Log the incoming HTTP request details, excluding paths like '/favicon.ico'.
         """
-        # Skip logging for /favicon.ico
         if request.path == "/favicon.ico":
-            return  # Do nothing if the request is for /favicon.ico
+            return
+        
+        ip = request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
         
         log_entry = {
             'timestamp': time.strftime('%Y-%m-%d %H:%M:%S', time.gmtime()),
-            'ip': request.remote_addr,
+            'ip': ip,
             'method': request.method,
             'user_agent': request.headers.get('User-Agent'),
             'referrer': request.headers.get('Referer', 'N/A'),
@@ -26,10 +27,10 @@ class TrafficLogger:
             'status_code': status_code,
             'content_length': request.headers.get('Content-Length', 'N/A')
         }
-        self.logs.appendleft(log_entry)  # Store log at the front (most recent)
+        self.logs.appendleft(log_entry)
 
     def get_logs(self):
         """
         Return all logged requests.
         """
-        return list(self.logs)  # Convert deque to list for rendering
+        return list(self.logs)

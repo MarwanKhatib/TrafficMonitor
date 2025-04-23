@@ -25,6 +25,10 @@ def save_log(log_entry):
     with open(LOG_FILE, 'w') as f:
         json.dump(logs, f, indent=4)
 
+# Helper to get the real IP
+def get_client_ip():
+    return request.headers.get('X-Forwarded-For', request.remote_addr).split(',')[0].strip()
+
 @app.route('/')
 def home():
     logs = load_logs()  # Load logs for the homepage
@@ -43,7 +47,7 @@ def catch_all(path):
     # Log the valid path request
     log_entry = {
         'timestamp': datetime.now().strftime('%Y-%m-%d %H:%M:%S'),
-        'ip': request.remote_addr,
+        'ip': get_client_ip(),
         'method': request.method,
         'request_path': request.path,
         'user_agent': request.headers.get('User-Agent'),
@@ -51,7 +55,6 @@ def catch_all(path):
         'status_code': 200,
         'content_length': len(request.data) if request.data else 'N/A'
     }
-    # Save the log to the file
     save_log(log_entry)
     
     return render_template('index.html', logs=load_logs())
