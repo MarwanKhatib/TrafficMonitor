@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Traffic Monitor</title>
+</head>
+<body>
+    <h1>Welcome to the Traffic Monitor</h1>
+    <h2>Recent Logs:</h2>
+    {% if logs %}
+        <ul>
+            {% for log in logs %}
+                <li>{{ log.timestamp }} - {{ log.request_path }} - {{ log.ip }}</li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No logs available.</p>
+    {% endif %}
+</body>
+</html>

@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs</title>
+</head>
+<body>
+    <h1>Logs</h1>
+    {% if logs %}
+        <table border="1">
+            <tr>
+                <th>Timestamp</th>
+                <th>IP Address</th>
+                <th>Method</th>
+                <th>Request Path</th>
+                <th>User Agent</th>
+                <th>Referrer</th>
+                <th>Status Code</th>
+                <th>Content Length</th>
+            </tr>
+            {% for log in logs %}
+                <tr>
+                    <td>{{ log.timestamp }}</td>
+                    <td>{{ log.ip }}</td>
+                    <td>{{ log.method }}</td>
+                    <td>{{ log.request_path }}</td>
+                    <td>{{ log.user_agent }}</td>
+                    <td>{{ log.referrer }}</td>
+                    <td>{{ log.status_code }}</td>
+                    <td>{{ log.content_length }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>No logs available.</p>
+    {% endif %}
+</body>
+</html>
